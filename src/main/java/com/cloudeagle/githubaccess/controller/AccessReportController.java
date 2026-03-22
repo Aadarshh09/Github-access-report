@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AccessReportController {
+    public AccessReportController(AccessReportService accessReportService) {
+        this.accessReportService = accessReportService;
+    }
 
     private final AccessReportService accessReportService;
 
@@ -31,7 +34,7 @@ public class AccessReportController {
     public ResponseEntity<AccessReport> getAccessReport(
             @RequestParam(name = "org") String org) {
 
-        log.info("Received access report request for org: {}", org);
+        System.out.println("Received access report request for org: " + org);
         AccessReport report = accessReportService.generateReport(org);
         return ResponseEntity.ok(report);
     }

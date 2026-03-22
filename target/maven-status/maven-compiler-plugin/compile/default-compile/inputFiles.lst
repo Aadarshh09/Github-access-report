@@ -1,0 +1,10 @@
+/workspaces/Github-access-report/src/main/java/com/cloudeagle/githubaccess/model/GitHubCollaborator.java
+/workspaces/Github-access-report/src/main/java/com/cloudeagle/githubaccess/model/GitHubRepo.java
+/workspaces/Github-access-report/src/main/java/com/cloudeagle/githubaccess/config/GitHubConfig.java
+/workspaces/Github-access-report/src/main/java/com/cloudeagle/githubaccess/exception/GitHubApiException.java
+/workspaces/Github-access-report/src/main/java/com/cloudeagle/githubaccess/GitHubAccessReportApplication.java
+/workspaces/Github-access-report/src/main/java/com/cloudeagle/githubaccess/service/GitHubApiClient.java
+/workspaces/Github-access-report/src/main/java/com/cloudeagle/githubaccess/controller/AccessReportController.java
+/workspaces/Github-access-report/src/main/java/com/cloudeagle/githubaccess/exception/GlobalExceptionHandler.java
+/workspaces/Github-access-report/src/main/java/com/cloudeagle/githubaccess/service/AccessReportService.java
+/workspaces/Github-access-report/src/main/java/com/cloudeagle/githubaccess/model/AccessReport.java

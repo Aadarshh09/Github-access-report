@@ -26,6 +26,9 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 public class GitHubApiClient {
+    public GitHubApiClient(RestTemplate githubRestTemplate) {
+        this.githubRestTemplate = githubRestTemplate;
+    }
 
     private final RestTemplate githubRestTemplate;
 
@@ -40,7 +43,7 @@ public class GitHubApiClient {
      * Handles pagination automatically — supports 100+ repos.
      */
     public List<GitHubRepo> fetchAllRepos(String org) {
-        log.info("Fetching repositories for org: {}", org);
+        System.out.println("Fetching repositories for org: " + org);
         String url = baseUrl + "/orgs/{org}/repos?per_page={perPage}&page={page}&type=all";
         return fetchAllPages(url, new ParameterizedTypeReference<List<GitHubRepo>>() {}, org);
     }
@@ -50,7 +53,7 @@ public class GitHubApiClient {
      * Handles pagination automatically — supports 1000+ users.
      */
     public List<GitHubCollaborator> fetchRepoCollaborators(String org, String repoName) {
-        log.debug("Fetching collaborators for repo: {}/{}", org, repoName);
+        System.out.println("Fetching collaborators for repo: " + org + "/" + repoName);
         String url = baseUrl + "/repos/{org}/{repo}/collaborators?per_page={perPage}&page={page}&affiliation=all";
         return fetchAllPagesForRepo(url, new ParameterizedTypeReference<List<GitHubCollaborator>>() {}, org, repoName);
     }
@@ -76,7 +79,7 @@ public class GitHubApiClient {
                 if (body == null || body.isEmpty()) break;
 
                 allItems.addAll(body);
-                log.debug("Fetched page {} for org {}, got {} items", page, org, body.size());
+                System.out.println("Fetched page " + page + " for org " + org + " got " + body.size() + " items");
 
                 if (body.size() < perPage) break; // Last page
                 page++;
@@ -121,7 +124,7 @@ public class GitHubApiClient {
             } catch (HttpClientErrorException ex) {
                 // 403 on a specific repo is common (e.g. insufficient scope) — log and skip
                 if (ex.getStatusCode().value() == 403) {
-                    log.warn("Insufficient permissions to fetch collaborators for {}/{}, skipping.", org, repo);
+                    System.out.println("Insufficient permissions for: " + org + "/" + repo);
                     break;
                 }
                 throw new GitHubApiException(

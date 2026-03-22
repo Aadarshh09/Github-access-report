@@ -28,6 +28,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AccessReportService {
+    public AccessReportService(GitHubApiClient apiClient, ExecutorService githubExecutorService) {
+        this.apiClient = apiClient;
+        this.githubExecutorService = githubExecutorService;
+    }
 
     private final GitHubApiClient apiClient;
     private final ExecutorService githubExecutorService;
@@ -43,12 +47,12 @@ public class AccessReportService {
             throw new IllegalArgumentException("Organization name must not be blank.");
         }
 
-        log.info("Starting access report generation for org: {}", org);
+        System.out.println("Starting access report generation for org: " + org);
         long startTime = System.currentTimeMillis();
 
         // Step 1: Fetch all repos (paginated)
         List<GitHubRepo> repos = apiClient.fetchAllRepos(org);
-        log.info("Found {} repositories in org: {}", repos.size(), org);
+        System.out.println("Found " + repos.size() + " repositories in org: " + org);
 
         // Step 2: Fan out — fetch collaborators for all repos in PARALLEL
         List<CompletableFuture<RepoCollaboratorResult>> futures = repos.stream()
@@ -67,7 +71,7 @@ public class AccessReportService {
         Map<String, List<UserRepoAccess>> userAccessMap = aggregateByUser(results);
 
         long elapsed = System.currentTimeMillis() - startTime;
-        log.info("Report generated in {}ms. Repos: {}, Users: {}", elapsed, repos.size(), userAccessMap.size());
+        System.out.println("Report generated in " + elapsed + "ms. Repos: " + repos.size() + " Users: " + userAccessMap.size());
 
         return AccessReport.builder()
                 .organization(org)
